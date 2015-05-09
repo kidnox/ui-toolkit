@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 22
+    }
+}
+
+ext {
+    PUBLISH_GROUP_ID = 'com.kidnox'
+    PUBLISH_ARTIFACT_ID = 'uitoolkit'
+    PUBLISH_VERSION = '0.72'
+}
+
+apply from: 'android-release-jar.gradle'
+
+
+
+
+
+
+
+
+
