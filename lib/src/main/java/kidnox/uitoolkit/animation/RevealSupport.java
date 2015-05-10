@@ -2,7 +2,7 @@ package kidnox.uitoolkit.animation;
 
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.view.View;
 
@@ -14,7 +14,7 @@ public final class RevealSupport {
 
     public static Animator createCircularReveal(View view, int centerX, int centerY,
                                                 float startRadius, float endRadius) {
-        RevealSupport.ViewAnimator revealLayout;
+        final RevealSupport.ViewAnimator revealLayout;
         try {
             revealLayout = (RevealSupport.ViewAnimator) view.getParent();
         } catch (ClassCastException ex) {
@@ -25,13 +25,18 @@ public final class RevealSupport {
 
         Rect bounds = new Rect();
         view.getHitRect(bounds);
-        ObjectAnimator reveal = ObjectAnimator.ofFloat(revealLayout, "revealRadius", startRadius, endRadius);
-        reveal.addListener(RevealSupport.getForPlatform(revealLayout, bounds, SDK_INT));
-        return reveal;
+        ValueAnimator animator = ValueAnimator.ofFloat(startRadius, endRadius);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override public void onAnimationUpdate(ValueAnimator animation) {
+                revealLayout.setRevealRadius((Float) animation.getAnimatedValue());
+            }
+        });
+        animator.addListener(RevealSupport.getForPlatform(revealLayout, bounds, SDK_INT));
+        return animator;
     }
 
     static RevealFinishedListener getForPlatform(ViewAnimator target, Rect bounds, int platform) {
-        if(platform >= 18) { //JB_MR2
+        if (platform >= 18) { //JB_MR2
             return new RevealFinishedListener(target, bounds, View.LAYER_TYPE_HARDWARE);
         } else {
             return new RevealFinishedListener(target, bounds, View.LAYER_TYPE_SOFTWARE);
@@ -41,31 +46,22 @@ public final class RevealSupport {
     static class RevealFinishedListener extends SimpleAnimationListener {
         final Rect mInvalidateBounds;
         final int newLayerType;
+        final int mLayerType;
         ViewAnimator target;
-
-        int mLayerType = -1;
 
         RevealFinishedListener(ViewAnimator target, Rect bounds, int layerType) {
             this.target = target;
             this.newLayerType = layerType;
             mInvalidateBounds = bounds;
-            if (target.self().getLayerType() != layerType) {
-                mLayerType = target.self().getLayerType();
-            }
+            mLayerType = target.self().getLayerType();
         }
 
         @Override public void onAnimationStart(android.animation.Animator animation) {
-            super.onAnimationStart(animation);
-            if(mLayerType > 0) {
-                target.self().setLayerType(newLayerType, null);
-            }
+            target.self().setLayerType(newLayerType, null);
         }
 
         @Override public void onAnimationEnd(android.animation.Animator animation) {
-            super.onAnimationEnd(animation);
-            if (mLayerType > 0) {
-                target.self().setLayerType(mLayerType, null);
-            }
+            target.self().setLayerType(mLayerType, null);
             if (target.self().getWindowToken() == null) {
                 target = null;
                 return;
@@ -88,8 +84,6 @@ public final class RevealSupport {
         void setTarget(View target);
 
         void setRevealRadius(float value);
-
-        float getRevealRadius();
 
         void invalidate(Rect bounds);
 

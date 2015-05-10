@@ -51,10 +51,6 @@ public class RevealRelativeLayout extends RelativeLayout implements RevealSuppor
         invalidate();
     }
 
-    @Override public float getRevealRadius() {
-        return mRadius;
-    }
-
     @Override public View self() {
         return this;
     }

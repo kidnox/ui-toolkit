@@ -51,10 +51,6 @@ public class RevealFrameLayout extends FrameLayout implements RevealSupport.View
         invalidate();
     }
 
-    @Override public float getRevealRadius() {
-        return mRadius;
-    }
-
     @Override public View self() {
         return this;
     }

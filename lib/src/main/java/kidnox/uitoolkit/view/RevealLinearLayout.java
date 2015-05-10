@@ -51,10 +51,6 @@ public class RevealLinearLayout extends LinearLayout implements RevealSupport.Vi
         invalidate();
     }
 
-    @Override public float getRevealRadius() {
-        return mRadius;
-    }
-
     @Override public View self() {
         return this;
     }
