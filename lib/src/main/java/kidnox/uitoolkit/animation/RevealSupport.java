@@ -18,7 +18,7 @@ public final class RevealSupport {
         try {
             revealLayout = (RevealSupport.ViewAnimator) view.getParent();
         } catch (ClassCastException ex) {
-            throw new IllegalArgumentException("View must be inside RevealAnimator.");
+            throw new IllegalArgumentException("View must be inside RevealSupport.ViewAnimator.");
         }
         revealLayout.setTarget(view);
         revealLayout.setCenter(centerX, centerY);
