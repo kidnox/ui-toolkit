@@ -6,9 +6,9 @@ import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.view.View;
 
-import kidnox.uitoolkit.utils.SimpleAnimationListener;
+import kidnox.uitoolkit.utils.SimpleAnimatorListener;
 
-import static android.os.Build.VERSION.SDK_INT;
+import static kidnox.uitoolkit.Views.hasJellyBeanMR2Api;
 
 public final class RevealSupport {
 
@@ -31,19 +31,19 @@ public final class RevealSupport {
                 revealLayout.setRevealRadius((Float) animation.getAnimatedValue());
             }
         });
-        animator.addListener(RevealSupport.getForPlatform(revealLayout, bounds, SDK_INT));
+        animator.addListener(RevealSupport.getForPlatform(revealLayout, bounds));
         return animator;
     }
 
-    static RevealFinishedListener getForPlatform(ViewAnimator target, Rect bounds, int platform) {
-        if (platform >= 18) { //JB_MR2
+    static RevealFinishedListener getForPlatform(ViewAnimator target, Rect bounds) {
+        if (hasJellyBeanMR2Api()) {
             return new RevealFinishedListener(target, bounds, View.LAYER_TYPE_HARDWARE);
         } else {
             return new RevealFinishedListener(target, bounds, View.LAYER_TYPE_SOFTWARE);
         }
     }
 
-    static class RevealFinishedListener extends SimpleAnimationListener {
+    static class RevealFinishedListener extends SimpleAnimatorListener {
         final Rect mInvalidateBounds;
         final int newLayerType;
         final int mLayerType;
@@ -62,10 +62,6 @@ public final class RevealSupport {
 
         @Override public void onAnimationEnd(android.animation.Animator animation) {
             target.self().setLayerType(mLayerType, null);
-            if (target.self().getWindowToken() == null) {
-                target = null;
-                return;
-            }
             target.setClipOutlines(false);
             target.setCenter(0, 0);
             target.setTarget(null);

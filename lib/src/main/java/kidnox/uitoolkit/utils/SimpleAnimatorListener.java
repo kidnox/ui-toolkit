@@ -2,7 +2,7 @@ package kidnox.uitoolkit.utils;
 
 import android.animation.Animator;
 
-public class SimpleAnimationListener implements Animator.AnimatorListener {
+public class SimpleAnimatorListener implements Animator.AnimatorListener {
     @Override public void onAnimationStart(Animator animation) { }
 
     @Override public void onAnimationEnd(Animator animation) { }

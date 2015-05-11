@@ -6,10 +6,10 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        minSdkVersion 12
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
-        versionName "0.6.2"
+        versionName "0.6.6"
     }
     buildTypes {
         release {
@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    // add dependencies here
+    compile 'com.android.support:support-annotations:22.1.1'
 }
 
 // build a jar with source files
