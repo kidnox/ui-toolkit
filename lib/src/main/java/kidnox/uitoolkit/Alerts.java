@@ -141,8 +141,9 @@ public final class Alerts {
                 currentAlert = null;
             }
             if(pendingAlert != null) {
-                pendingAlert.show();
+                Alert temp = pendingAlert;
                 pendingAlert = null;
+                temp.show();
             }
         }
     }
