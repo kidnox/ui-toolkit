@@ -97,8 +97,12 @@ public final class Alerts {
                 cancel();
                 return;
             }
-            currentAlert = this;
             final ViewGroup parent = getConfiguration().getParentLayout(currentContext);
+            if(parent == null) {
+                cancel();
+                return;
+            }
+            currentAlert = this;
             alertView = getConfiguration().getLayout(parent);
             getConfiguration().setMessage(alertView, message);
             Views.hide(alertView);
@@ -174,7 +178,7 @@ public final class Alerts {
             if(id < 0) throw new IllegalArgumentException("you must override getParentId() or getParentLayout()");
             try {
                 ViewGroup viewGroup = (ViewGroup) activity.findViewById(id);
-                if(viewGroup == null) throw new IllegalArgumentException("can't find parent view");
+                if(viewGroup == null) return null;
                 return viewGroup;
             } catch (ClassCastException ex) {
                 throw new IllegalArgumentException("parent view must be a ViewGroup");
