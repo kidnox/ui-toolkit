@@ -4,12 +4,40 @@ import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewPropertyAnimator;
 
 import kidnox.uitoolkit.animation.RevealSupport;
 
-import static kidnox.uitoolkit.Views.hasLollipopApi;
+import static kidnox.uitoolkit.Views.*;
 
 public final class Animations {
+
+    private static int defAnimDuration = 300;
+
+    public static void setDefaultAnimationDuration(int duration) {
+        if(duration <= 0) throw new IllegalArgumentException();
+        defAnimDuration = duration;
+    }
+
+    public static ViewPropertyAnimator fadeIn(View v) {
+        return fadeIn(v, defAnimDuration);
+    }
+
+    public static ViewPropertyAnimator fadeOut(View v) {
+        return fadeOut(v, defAnimDuration);
+    }
+
+    public static ViewPropertyAnimator fadeIn(View v, int duration) {
+        ViewPropertyAnimator animator = makeTransparent(show(v)).animate().alpha(1f).setDuration(duration);
+        animator.start();
+        return animator;
+    }
+
+    public static ViewPropertyAnimator fadeOut(View v, int duration) {
+        ViewPropertyAnimator animator = makeOpaque(show(v)).animate().alpha(0f).setDuration(duration);
+        animator.start();
+        return animator;
+    }
 
     /**
      * Returns an Animator which can animate a clipping circle.

@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import kidnox.uitoolkit.utils.SimpleAnimatorListener;
 
-import static kidnox.uitoolkit.Views.postDelayed;
-import static kidnox.uitoolkit.Views.post;
+import static kidnox.uitoolkit.Views.*;
 
 public final class Alerts {
 
@@ -105,13 +104,11 @@ public final class Alerts {
             currentAlert = this;
             alertView = getConfiguration().getLayout(parent);
             getConfiguration().setMessage(alertView, message);
-            Views.hide(alertView);
-            parent.addView(alertView);
+            parent.addView(Views.hide(alertView));
             post(new Runnable() {
                 @Override public void run() {
                     if(alertView != null) {
-                        Views.show(alertView);
-                        getConfiguration().animateAppearing(alertView);
+                        getConfiguration().animateAppearing(Views.show(alertView));
                     } else {
                         cancel();
                     }
@@ -177,9 +174,7 @@ public final class Alerts {
             int id = getParentId();
             if(id < 0) throw new IllegalArgumentException("you must override getParentId() or getParentLayout()");
             try {
-                ViewGroup viewGroup = (ViewGroup) activity.findViewById(id);
-                if(viewGroup == null) return null;
-                return viewGroup;
+                return (ViewGroup) activity.findViewById(id);
             } catch (ClassCastException ex) {
                 throw new IllegalArgumentException("parent view must be a ViewGroup");
             }
