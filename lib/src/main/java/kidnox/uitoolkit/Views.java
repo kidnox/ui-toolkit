@@ -1,6 +1,5 @@
 package kidnox.uitoolkit;
 
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -84,18 +83,6 @@ public final class Views {
 
     public static void postDelayed(Runnable runnable, int delay) {
         HANDLER.postDelayed(runnable, delay);
-    }
-
-    public static boolean hasLollipopApi() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    public static boolean hasJellyBeanMR2Api() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2;
-    }
-
-    public static boolean hasJellyBeanApi() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
 }

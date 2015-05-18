@@ -6,9 +6,9 @@ import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.view.View;
 
+import kidnox.uitoolkit.Info;
 import kidnox.uitoolkit.utils.SimpleAnimatorListener;
 
-import static kidnox.uitoolkit.Views.hasJellyBeanMR2Api;
 
 public final class RevealSupport {
 
@@ -36,7 +36,7 @@ public final class RevealSupport {
     }
 
     static RevealFinishedListener getForPlatform(ViewAnimator target, Rect bounds) {
-        if (hasJellyBeanMR2Api()) {
+        if (Info.hasJellyBeanMR2Api()) {
             return new RevealFinishedListener(target, bounds, View.LAYER_TYPE_HARDWARE);
         } else {
             return new RevealFinishedListener(target, bounds, View.LAYER_TYPE_SOFTWARE);

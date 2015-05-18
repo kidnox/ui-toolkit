@@ -59,7 +59,7 @@ public final class Animations {
      */
     @TargetApi(21)
     public static Animator createCircularReveal(View view, int centerX, int centerY, float startRadius, float endRadius) {
-        if (hasLollipopApi()) {
+        if (Info.hasLollipopApi()) {
             return ViewAnimationUtils.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
         } else {
             return RevealSupport.createCircularReveal(view, centerX, centerY, startRadius, endRadius);
