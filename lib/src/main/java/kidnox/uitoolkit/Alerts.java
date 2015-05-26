@@ -26,7 +26,7 @@ public final class Alerts {
 
     private static Configuration getConfiguration() {
         if(configuration == null) {
-            throw new NullPointerException("nul configuration, you must call setConfiguration first");
+            throw new NullPointerException("null configuration, you must call setConfiguration first");
         }
         return configuration;
     }

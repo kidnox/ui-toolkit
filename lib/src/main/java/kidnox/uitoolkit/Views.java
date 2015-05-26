@@ -32,6 +32,10 @@ public final class Views {
         return view;
     }
 
+    public boolean isVisible(View v) {
+        return v.getVisibility() == VISIBLE;
+    }
+
     public static <T extends View> T makeTransparent(T view) {
         if(view.getAlpha() != 0f) {
             view.setAlpha(0f);
@@ -52,6 +56,7 @@ public final class Views {
         } else {
             v.getLayoutParams().width = width;
             v.getLayoutParams().height = height;
+            v.requestLayout();
         }
     }
 
@@ -67,7 +72,6 @@ public final class Views {
         return allowClick(300);
     }
 
-    static long lastClickTime = 0;
     public static boolean allowClick(int delay) {
         long time = System.currentTimeMillis();
         if(time - lastClickTime > delay) {
@@ -75,6 +79,11 @@ public final class Views {
             return true;
         }
         return false;
+    }
+
+    static long lastClickTime = 0;
+    public static long getLastClickTime() {
+        return lastClickTime;
     }
 
     public static void post(Runnable runnable) {
