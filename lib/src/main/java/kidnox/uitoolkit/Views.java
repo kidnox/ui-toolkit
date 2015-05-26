@@ -90,7 +90,7 @@ public final class Views {
         HANDLER.post(runnable);
     }
 
-    public static void postDelayed(Runnable runnable, int delay) {
+    public static void postDelayed(Runnable runnable, long delay) {
         HANDLER.postDelayed(runnable, delay);
     }
 
