@@ -72,6 +72,7 @@ public final class Views {
         return allowClick(300);
     }
 
+    public static long lastClickTime = 0;
     public static boolean allowClick(int delay) {
         long time = System.currentTimeMillis();
         if(time - lastClickTime > delay) {
@@ -79,11 +80,6 @@ public final class Views {
             return true;
         }
         return false;
-    }
-
-    static long lastClickTime = 0;
-    public static long getLastClickTime() {
-        return lastClickTime;
     }
 
     public static void post(Runnable runnable) {
