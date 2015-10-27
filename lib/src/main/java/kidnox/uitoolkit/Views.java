@@ -74,7 +74,7 @@ public final class Views {
 
     public static long lastClickTime = 0;
     public static boolean allowClick(int delay) {
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime() / 1000000;
         if(Math.abs(time - lastClickTime) > delay) {
             lastClickTime = time;
             return true;
