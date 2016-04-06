@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import kidnox.uitoolkit.utils.SimpleAnimatorListener;
 
 import static kidnox.uitoolkit.Views.*;
@@ -18,7 +21,7 @@ public final class Alerts {
     private static Configuration configuration;
     private static Activity currentContext;
     private static Alert currentAlert;
-    private static Alert pendingAlert;
+    private static Queue<Alert> alertsQueue;
 
     public static void setConfiguration(@NonNull Configuration _configuration) {
         configuration = _configuration;
@@ -74,11 +77,31 @@ public final class Alerts {
             @Override public void run() {
                 if(currentAlert == null) {
                     new Alert(message, isLong).show();
-                } else if (pendingAlert == null){
-                    pendingAlert = new Alert(message, isLong);
-                } //else ignore
+                } else {
+                    enqueue(new Alert(message, isLong));
+                }
             }
         });
+    }
+
+    private static void enqueue(Alert alert) {
+        int queueSize = getConfiguration().getAlertsQueueSize();
+        if (queueSize < 1) return;
+        if (alertsQueue == null) alertsQueue = new LinkedList<>(); // lazy queue init
+        if (alertsQueue.size() >= queueSize) {
+            alertsQueue.poll();
+        }
+        alertsQueue.add(alert);
+    }
+
+    private static Alert dequeueAndShow() {
+        if(alertsQueue != null && !alertsQueue.isEmpty()) {
+            Alert alert = alertsQueue.poll();
+            alert.show();
+            if (alertsQueue.size() == 0) alertsQueue = null; // destroy queue
+            return alert;
+        }
+        return null;
     }
 
     private static class Alert {
@@ -141,11 +164,7 @@ public final class Alerts {
             if(this == currentAlert) {
                 currentAlert = null;
             }
-            if(pendingAlert != null) {
-                Alert temp = pendingAlert;
-                pendingAlert = null;
-                temp.show();
-            }
+            dequeueAndShow();
         }
     }
 
@@ -213,6 +232,8 @@ public final class Alerts {
                     .start();
         }
 
+        public int getAlertsQueueSize() {
+            return 0;
+        }
     }
-
 }
